@@ -1,6 +1,8 @@
 <template>
-<Message severity="success">Bem-vindo ao PrimeVue</Message>
+<Message severity="warn" :life="5000" :sticky="false">This message will hide in 5 seconds.</Message>
     <div class="p-shadow-21">
+    <Toast />
+        <Toast position="top-left" group="tl" />
         <Card>
             <template #title>
                 Contatos
@@ -8,10 +10,10 @@
             <template #content>
             <div>
                 <div>
-                    <DataTable :value="contatos" responsiveLayout="scroll" selectionMode="single">                        
+                    <DataTable :value="contatos" responsiveLayout="scroll">                        
                         <Column header="Nome">
                             <template #body="{data}">
-                                {{data.nome}}
+                                {{data.nome}} {{data.sobrenome}}
                             </template></Column>
                         <Column field="telefone" header="Telefone"></Column>
                         <Column headerStyle="width:6rem" >
@@ -34,7 +36,7 @@
         
         <Dialog header="Confirmação" v-model:visible="display" :style="{width: '350px'}" :modal="true">
             <div class="confirmation-content">                
-                <span> Deseja remover o contato <b>{{selectedContato.nome}}</b> ?</span>
+                <span> Deseja remover o contato <b>{{selectedContato.nome}} {{selectedContato.sobrenome}}</b> ?</span>
             </div>
             <template #footer>
                 <Button label="Cancelar" icon="pi pi-times" @click="closeModal" class="p-button"/>
@@ -50,9 +52,7 @@ import utilsService from '../../services/utilsService'
 import { useToast } from "primevue/usetoast"
 
 
-export default {
-    name : "Contatos",            
-
+export default {     
     created() {        
         contatoService.getContato().then((response) => {
             this.contatos = response.data
@@ -60,10 +60,10 @@ export default {
         this.$toast.add({severity:'success', summary: 'Success Message', detail:'Order submitted', life: 3000});
     },
 
-    mounted (){
-        console.log("MONTOU")
+    mounted (){        
         const toast = useToast()
         toast.add({severity:'info', summary: 'Info Message', detail:'Message Content', life: 3000});
+        this.$toast.add({severity:'error', summary: 'Error Message', detail:'Message Content', life: 3000});
     },
 
     data () {                      
