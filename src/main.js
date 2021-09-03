@@ -11,6 +11,7 @@ import Column from 'primevue/column';
 import Card from 'primevue/card';
 import Dialog from 'primevue/dialog';
 import ColumnGroup from 'primevue/columngroup';
+import Toast from "primevue/toast";
 import ToastService from 'primevue/toastservice';
 import Message from 'primevue/message';
 import Skeleton from 'primevue/skeleton';
@@ -26,6 +27,7 @@ const app = createApp(App)
 app.use(router)
 app.use(PrimeVue,{ripple: true})
 app.use(ToastService)
+app.component("Toast", Toast);
 app.component('Skeleton', Skeleton)
 app.component('Menubar', Menubar)
 app.component('Sidebar', Sidebar)

@@ -1,8 +1,6 @@
 <template>
-<Message severity="warn" :life="5000" :sticky="false">This message will hide in 5 seconds.</Message>
-    <div class="p-shadow-21">
-    <Toast />
-        <Toast position="top-left" group="tl" />
+    <div class="p-shadow-21">    
+        <Toast />
         <Card>
             <template #title>
                 Contatos
@@ -48,33 +46,33 @@
 
 <script>
 import contatoService from '../../services/contatoService'
-import utilsService from '../../services/utilsService'
-import { useToast } from "primevue/usetoast"
 
 
 export default {     
     created() {        
-        contatoService.getContato().then((response) => {
-            this.contatos = response.data
-        })                
-        this.$toast.add({severity:'success', summary: 'Success Message', detail:'Order submitted', life: 3000});
+        this.getContatos()                     
     },
 
     mounted (){        
-        const toast = useToast()
-        toast.add({severity:'info', summary: 'Info Message', detail:'Message Content', life: 3000});
-        this.$toast.add({severity:'error', summary: 'Error Message', detail:'Message Content', life: 3000});
+        
     },
 
     data () {                      
         return {
             contatos : {}, 
             display : false,
-            selectedContato: null            
+            selectedContato: null,                    
         }        
     },
 
     methods: {
+
+        getContatos() {
+            contatoService.getContato().then((response) => {
+            this.contatos = response.data
+            }) 
+        }, 
+        
         openModal(contato)
         {                        
             this.display = true   
@@ -88,23 +86,32 @@ export default {
         {                            
             contatoService.deleteContato(contato.id)
             .then(() => {              
-                this.display = false  
-                utilsService.alertSuccess('Contato deletado!')
+                this.display = false                  
+                this.notifySuccess("Contato excluído com sucesso!")                  
+                this.getContatos()                
             }).catch(() => {
                 this.display = false  
-                utilsService.alertSuccess('Erro ao deletar o contato!')
+                this.notifyError('Erro ao deletar o contato!')
             })          
         },
 
         editarContato()
-        {
-            console.log("CLICOU")            
-            this.$toast.add({
-                severity:'success', 
-                summary: 'Success Message', 
-                detail:'Order submitted', 
-                life: 3000});            
-        }
+        {                                 
+            this.notifySuccess("Contato Editado")
+            this.notifyError("Contato Editado")
+            this.notifyInfo("Contato Editado")
+                        
+        },
+
+        notifySuccess(mensagem) {
+            this.$toast.add({severity:'success', summary: 'Sucesso', detail:mensagem, life: 3000});
+        },
+        notifyError(mensagem) {
+            this.$toast.add({severity:'error', summary: 'Sucesso', detail:mensagem, life: 3000});
+        },
+        notifyInfo(mensagem) {
+            this.$toast.add({severity:'info', summary: 'Sucesso', detail:mensagem, life: 3000});
+        },
     },    
     
 }

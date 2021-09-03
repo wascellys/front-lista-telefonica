@@ -37,11 +37,7 @@
 
 
 
-export default {     
-    
-
-    
-
+export default {         
     data () {                      
         return {
             contatos : {}, 
